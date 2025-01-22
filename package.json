@@ -1,0 +1,32 @@
+{
+  "name": "travel-backend",
+  "version": "1.0.0",
+  "description": "teckiajay backend for using nodejs and mongodb db for deployed in vps",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
+    "prod": "node -r dotenv/config src/index.js"
+  },
+  "keywords": [
+    "ajay",
+    "budaniya",
+    "tecki",
+    "ajay"
+  ],
+  "author": "ajay budaniya",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "celebrate": "^15.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
