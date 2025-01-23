@@ -6,7 +6,8 @@ const orderSchema = new Schema({
         required: [true, "Please Enter username !"]
     },
     websiteLinked: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "websites",
         required: [true, "Please Enter username !"]
     },
     websiteInfo: {

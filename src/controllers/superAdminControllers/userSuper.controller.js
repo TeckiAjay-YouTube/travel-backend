@@ -21,17 +21,6 @@ const generateAccessAndRefereshTokens = async (userId) => {
     }
 }
 
-// Generation trxToken for Transaction
-const generateTrxAuthToken = (memberId, trxPassword) => {
-    let data = {
-        memberId,
-        trxPassword
-    }
-    let jsonToString = JSON.stringify(data);
-    let sha256Generate = createHash('sha256').update(jsonToString).digest('hex');
-    return sha256Generate;
-}
-
 export const getUser = asyncHandler(async (req, res, next) => {
     let user = await userDB.find()
     if (user.length === 0) {
@@ -111,13 +100,14 @@ export const changePassword = asyncHandler(async (req, res) => {
 });
 
 export const loginUser = asyncHandler(async (req, res) => {
-    let { username, password } = req.body;
-    let user = await userDB.aggregate([{ $match: { userName: username, password: password, memberType: "Admin" } }, { $project: { "_id": 1, "userName": 1, "memberId": 1, "memberType": 1, "password": 1, "isActive": 1 } }])
+    let { email, password } = req.body;
+    let user = await userDB.aggregate([{ $match: { email: email, password: password, isRole: "SuperAdmin" } }, { $project: { "_id": 1, "userName": 1, "email": 1, "isRole": 1, "isStatus": 1 } }])
+
     if (!user?.length) {
         return res.status(404).json({ message: "Failed", data: "Invalid Credential Try Again !" })
     }
 
-    if (user[0]?.isActive !== true) {
+    if (user[0]?.isStatus !== true) {
         return res.status(404).json({ message: "Failed", data: "User Status is Not Active" })
     }
 

@@ -2,18 +2,21 @@ import { Schema, model } from "mongoose";
 
 const packageSchema = new Schema({
     websiteLinked: {
-        type: String,
-        required: [true, "Please Enter username !"]
+        type: Schema.Types.ObjectId,
+        ref: "websites",
+        required: [true, "Please Enter website Linked !"]
     },
     title: {
         type: String,
-        required: [true, "Please Enter your Full Name !"]
+        required: [true, "Please Enter your package Title !"]
     },
     description: {
         type: String,
+        required: [true, "Please Enter your package Description !"]
     },
     image: {
         type: String,
+        required: [true, "Please add your package image !"]
     },
     pdf: {
         type: String,

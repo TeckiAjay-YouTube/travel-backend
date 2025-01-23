@@ -16,7 +16,8 @@ const userSchema = new Schema({
         required: [true, "Please Select member Type !"]
     },
     websiteLinked: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "websites",
         required: [true, "Please Select member Type !"]
     },
     fullName: {
@@ -76,7 +77,7 @@ userSchema.methods.generateAccessToken = function () {
             _id: this._id,
             userName: this.userName,
             email: this.email,
-            userType: this.userType
+            isRole: this.isRole,
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
