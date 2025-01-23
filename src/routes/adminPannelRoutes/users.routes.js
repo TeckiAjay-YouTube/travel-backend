@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, changePassword, getUser, loginUser, logOutUser, register } from "../../controllers/adminPannelControllers/users.controller.js";
+import { addUser, getUser, loginUser, logOutUser } from "../../controllers/adminPannelControllers/users.controller.js";
 const router = express.Router();
 import { celebrate, Joi } from "celebrate";
 
@@ -7,9 +7,11 @@ router.get("/getUsers", getUser);
 
 router.post("/addUser", celebrate({
     body: Joi.object({
-        userType: Joi.string().valid("Admin", "Manager", "Users").required(),
+        isRole: Joi.string().valid("Users").required(),
+        websiteLinked: Joi.string().required().length(24),
         fullName: Joi.string().required(),
         email: Joi.string().required(),
+        password: Joi.string().required().min(5),
         mobileNumber: Joi.string().required(),
         addresh: Joi.object({
             country: Joi.string().required(),
@@ -21,33 +23,6 @@ router.post("/addUser", celebrate({
         isActive: Joi.boolean().optional(),
     })
 }), addUser);
-
-router.post("/register", celebrate({
-    body: Joi.object({
-        userType: Joi.string().valid("Users").required(),
-        userName: Joi.string().required(),
-        fullName: Joi.string().required(),
-        email: Joi.string().required(),
-        password: Joi.string().required(),
-        mobileNumber: Joi.string().required(),
-        addresh: Joi.object({
-            country: Joi.string().required(),
-            state: Joi.string().required(),
-            city: Joi.string().required(),
-            addresh: Joi.string().required(),
-            pincode: Joi.number().required()
-        }),
-        isActive: Joi.boolean().optional(),
-    })
-}), register);
-
-router.post("/changePassword", celebrate({
-    body: Joi.object({
-        userId: Joi.string().required().length(24),
-        oldPassword: Joi.string().required(),
-        newPassword: Joi.string().required(),
-    })
-}), changePassword);
 
 router.post("/login", celebrate({
     body: Joi.object({

@@ -1,23 +1,23 @@
 import { Schema, model } from "mongoose";
 
 const websiteSchema = new Schema({
-    userLinked: {
-        type: string,
-        required: [true, "Please Enter username !"]
-    },
     websiteName: {
         type: String,
-        required: [true, "Please Enter username !"]
+        required: [true, "Please Enter website name !"]
     },
     websiteInfo: {
         type: String,
-        required: [true, "Please Enter your Full Name !"]
+        required: [true, "Please Enter your website info!"]
     },
     websiteDescription: {
         type: String,
     },
     websiteDomain: {
         type: String,
+        lowecase: true,
+        trim: true,
+        unique: true,
+        required: [true, "Please Enter your website domain !"]
     },
     isStatus: {
         type: Boolean,

@@ -1,8 +1,11 @@
 import express from "express";
-import userRoutes from "./routes/adminPannelRoutes/users.routes.js";
+import userAdmin from "./routes/adminPannelRoutes/users.routes.js";
+import userSuper from "./routes/superAdminRoutes/userSuper.routes.js";
+import websiteSuper from "./routes/superAdminRoutes/websiteSuper.routes.js";
 import cors from "cors";
 import { errors } from "celebrate";
 import cookieParser from "cookie-parser";
+import { ApiError } from "./utils/ApiError.js";
 import ErrorMiddleware from "./middlewares/ErrorMiddleware.js";
 
 const app = express();
@@ -22,7 +25,9 @@ app.use(cookieParser());
 app.use(express.static("public"));
 
 // Admin pannel routes
-app.use("/apiAdmin/v1/user/", userRoutes);
+app.use("/apiSuper/v1/user/", userSuper);
+app.use("/apiSuper/v1/website/", websiteSuper);
+app.use("/apiAdmin/v1/user/", userAdmin);
 
 // Catch-all for undefined routes
 app.all("*", (req, res, next) => {

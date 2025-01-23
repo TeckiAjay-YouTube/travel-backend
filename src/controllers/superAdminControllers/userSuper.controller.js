@@ -32,23 +32,13 @@ const generateTrxAuthToken = (memberId, trxPassword) => {
     return sha256Generate;
 }
 
-export const getUser = asyncHandler(async (req, res) => {
-    let user = await userDB.aggregate([
-        {
-            $lookup: {
-                from: "packages",
-                localField: "package",
-                foreignField: "_id",
-                as: "package"
-            }
-        }, {
-            $unwind: {
-                path: "$package",
-                preserveNullAndEmptyArrays: true,
-            },
-        }, { $sort: { createdAt: -1 } }]).then((data) => {
-            res.status(200).json(new ApiResponse(200, data))
-        })
+export const getUser = asyncHandler(async (req, res, next) => {
+    let user = await userDB.find()
+    if (user.length === 0) {
+        return next(new ApiError(400, "No user Avabile !"))
+    }
+    res.status(200).json(new ApiResponse(200, user))
+
 });
 
 export const addUser = asyncHandler(async (req, res) => {
@@ -57,6 +47,63 @@ export const addUser = asyncHandler(async (req, res) => {
     storeData.userName = `T${date}`
 
     await userDB.create(storeData).then((data) => {
+        res.status(201).json(new ApiResponse(201, "User Created Succesfully !"))
+    }).catch((err) => {
+        res.status(500).json({ message: "Failed", data: err.message })
+    })
+});
+
+export const updateUser = asyncHandler(async (req, res, next) => {
+    const id = req.params.id
+    const UpdateData = req.body
+
+    let user = await userDB.findByIdAndUpdate(id, UpdateData, { new: true })
+
+    if (user == null) {
+        return next(new ApiError(400, "User Not Found and Unable to update !"))
+    }
+
+    res.status(200).json(new ApiResponse(200, user))
+});
+
+export const deleteUser = asyncHandler(async (req, res, next) => {
+    const id = req.params.id
+
+    let user = await userDB.findByIdAndDelete(id)
+
+    if (user == null) {
+        return next(new ApiError(400, "User Not Found and Unable to delete !"))
+    }
+
+    res.status(200).json(new ApiResponse(200, "User Delete Successfully !"))
+});
+
+export const register = asyncHandler(async (req, res) => {
+    let storeData = req.body;
+    let date = new Date().getTime()
+    storeData.userName = `S${date}`
+
+    if (storeData?.secureKey !== "ajay@9587") {
+        return res.status(400).json({ message: "Failed", data: "Invalid Secure Key !" })
+    }
+
+    await userDB.create(storeData).then((data) => {
+        res.status(201).json(new ApiResponse(201, "User Created Succesfully !"))
+    }).catch((err) => {
+        res.status(500).json({ message: "Failed", data: err.message })
+    })
+});
+
+export const changePassword = asyncHandler(async (req, res) => {
+    let storeData = req.body;
+
+    let userInfo = await userDB.findById(storeData?.userId)
+
+    if (!userInfo) {
+        return res.status(400).json(new ApiError(400, "User Not found !"))
+    }
+
+    await userDB.findByIdAndUpdate(storeData?.userId, {}).then((data) => {
         res.status(201).json(new ApiResponse(201, "User Created Succesfully !"))
     }).catch((err) => {
         res.status(500).json({ message: "Failed", data: err.message })
