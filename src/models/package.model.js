@@ -18,10 +18,29 @@ const packageSchema = new Schema({
         type: String,
         required: [true, "Please add your package image !"]
     },
+    price: {
+        type: String,
+        required: [true, "Please add your package price !"]
+    },
+    duration: {
+        type: String,
+        required: [true, "Please add your package duration !"]
+    },
+    pickUpPoint: {
+        type: String,
+        required: [true, "Please add your package pickup location !"]
+    },
+    dropPoint: {
+        type: String,
+        required: [true, "Please add your package drop Location !"]
+    },
     pdf: {
         type: String,
     },
-    redirectLink: {
+    slug: {
+        type: String,
+    },
+    slugContent: {
         type: String,
     },
     extraField: {

@@ -4,6 +4,7 @@ import websiteSuper from "./routes/superAdminRoutes/websiteSuper.routes.js";
 import userAdmin from "./routes/adminPannelRoutes/users.routes.js";
 import packageAdmin from "./routes/adminPannelRoutes/package.routes.js";
 import utilAdmin from "./routes/adminPannelRoutes/utils.routes.js";
+import packageUser from "./routes/userPannelRoutes/package.routes.js";
 import cors from "cors";
 import { errors } from "celebrate";
 import cookieParser from "cookie-parser";
@@ -26,12 +27,16 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 app.use(express.static("public"));
 
-// Admin pannel routes
+// superadmin pannel routes
 app.use("/apiSuper/v1/user/", userSuper);
 app.use("/apiSuper/v1/website/", websiteSuper);
+// admin
 app.use("/apiAdmin/v1/user/", userAdmin);
 app.use("/apiAdmin/v1/package/", packageAdmin);
 app.use("/apiAdmin/v1/utils/", utilAdmin);
+app.use("/apiAdmin/v1/utils/", utilAdmin);
+// user frontend
+app.use("/apiUser/v1/package", packageUser);
 
 // Catch-all for undefined routes
 app.all("*", (req, res, next) => {
