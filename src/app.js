@@ -4,7 +4,7 @@ import websiteSuper from "./routes/superAdminRoutes/websiteSuper.routes.js";
 import userAdmin from "./routes/adminPannelRoutes/users.routes.js";
 import packageAdmin from "./routes/adminPannelRoutes/package.routes.js";
 import utilAdmin from "./routes/adminPannelRoutes/utils.routes.js";
-import packageUser from "./routes/userPannelRoutes/package.routes.js";
+import frontendUser from "./routes/userPannelRoutes/frontend.routes.js";
 import cors from "cors";
 import { errors } from "celebrate";
 import cookieParser from "cookie-parser";
@@ -36,7 +36,7 @@ app.use("/apiAdmin/v1/package/", packageAdmin);
 app.use("/apiAdmin/v1/utils/", utilAdmin);
 app.use("/apiAdmin/v1/utils/", utilAdmin);
 // user frontend
-app.use("/apiUser/v1/package", packageUser);
+app.use("/apiUser/v1/frontend", frontendUser);
 
 // Catch-all for undefined routes
 app.all("*", (req, res, next) => {

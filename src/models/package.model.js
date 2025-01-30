@@ -39,9 +39,12 @@ const packageSchema = new Schema({
     },
     slug: {
         type: String,
+        trim: true,
+        required: [true, "Please add your package slug!"]
     },
     slugContent: {
         type: String,
+        required: [true, "Please add your package slug content!"]
     },
     extraField: {
         type: String,
