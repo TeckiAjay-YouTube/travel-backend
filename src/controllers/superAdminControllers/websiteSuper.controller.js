@@ -30,7 +30,7 @@ export const updateWebsite = asyncHandler(async (req, res, next) => {
     res.status(200).json(new ApiResponse(200, website))
 });
 
-export const deleteWebsite = asyncHandler(async (req, res,next) => {
+export const deleteWebsite = asyncHandler(async (req, res, next) => {
     const id = req.params.id
 
     let website = await websiteDB.findByIdAndDelete(id);

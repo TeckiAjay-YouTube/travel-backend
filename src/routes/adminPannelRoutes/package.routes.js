@@ -39,5 +39,4 @@ router.post("/deletePackage/:id", celebrate({
     })
 }), adminVerify, deletePackage);
 
-
 export default router;

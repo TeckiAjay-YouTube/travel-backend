@@ -32,23 +32,14 @@ const generateTrxAuthToken = (memberId, trxPassword) => {
     return sha256Generate;
 }
 
-export const getUser = asyncHandler(async (req, res) => {
-    let user = await userDB.aggregate([
-        {
-            $lookup: {
-                from: "packages",
-                localField: "package",
-                foreignField: "_id",
-                as: "package"
-            }
-        }, {
-            $unwind: {
-                path: "$package",
-                preserveNullAndEmptyArrays: true,
-            },
-        }, { $sort: { createdAt: -1 } }]).then((data) => {
-            res.status(200).json(new ApiResponse(200, data))
-        })
+export const getUser = asyncHandler(async (req, res, next) => {
+    let websiteId = req?.user?.websiteLinked;
+    let user = await userDB.find({ websiteLinked: websiteId })
+
+    if (user.length === 0) {
+        next(new ApiError(400, "No user Found !"))
+    }
+    res.status(200).json(new ApiResponse(200, user))
 });
 
 export const addUser = asyncHandler(async (req, res) => {

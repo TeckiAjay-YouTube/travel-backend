@@ -2,8 +2,9 @@ import express from "express";
 import { addUser, getUser, loginUser, logOutUser } from "../../controllers/adminPannelControllers/users.controller.js";
 const router = express.Router();
 import { celebrate, Joi } from "celebrate";
+import { adminVerify } from "../../middlewares/authVerifyMiddleware.js";
 
-router.get("/getUsers", getUser);
+router.get("/getUsers", adminVerify, getUser);
 
 router.post("/addUser", celebrate({
     body: Joi.object({
@@ -22,7 +23,7 @@ router.post("/addUser", celebrate({
         }),
         isActive: Joi.boolean().optional(),
     })
-}), addUser);
+}), adminVerify, addUser);
 
 router.post("/login", celebrate({
     body: Joi.object({

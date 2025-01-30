@@ -2,8 +2,9 @@ import express from "express";
 import { addUser, changePassword, deleteUser, getUser, loginUser, logOutUser, register, updateUser } from "../../controllers/superAdminControllers/userSuper.controller.js";
 const router = express.Router();
 import { celebrate, Joi } from "celebrate";
+import { superAdminVerify } from "../../middlewares/authVerifyMiddleware.js";
 
-router.get("/getUsers", getUser);
+router.get("/getUsers", superAdminVerify, getUser);
 
 router.post("/addUser", celebrate({
     body: Joi.object({
@@ -22,7 +23,7 @@ router.post("/addUser", celebrate({
         }),
         isActive: Joi.boolean().optional().default(true),
     })
-}), addUser);
+}), superAdminVerify, addUser);
 
 router.patch("/updateUser/:id", celebrate({
     body: Joi.object({
@@ -49,7 +50,7 @@ router.delete("/deleteUser/:id", celebrate({
     params: Joi.object({
         id: Joi.string().required().length(24),
     }),
-}), deleteUser);
+}), superAdminVerify, deleteUser);
 
 router.post("/register", celebrate({
     body: Joi.object({
@@ -77,7 +78,7 @@ router.post("/changePassword", celebrate({
         oldPassword: Joi.string().required(),
         newPassword: Joi.string().required(),
     })
-}), changePassword);
+}), superAdminVerify, changePassword);
 
 router.post("/login", celebrate({
     body: Joi.object({
@@ -86,6 +87,6 @@ router.post("/login", celebrate({
     })
 }), loginUser);
 
-router.get("/logout", logOutUser);
+router.get("/logout", superAdminVerify, logOutUser);
 
 export default router;

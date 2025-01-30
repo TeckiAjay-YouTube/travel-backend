@@ -6,7 +6,7 @@ import { ApiResponse } from "../../utils/ApiResponse.js"
 
 export const packageList = asyncHandler(async (req, res, next) => {
     const websiteLinkId = req?.user?.websiteLinked
-    let packagelist = await packageDB.find({ websiteLinked: websiteLinkId }, { _id: 1, title: 1 });
+    let packagelist = await packageDB.find({ websiteLinked: websiteLinkId, }, { _id: 1, title: 1 });
 
     if (packagelist.length == 0) {
         return next(new ApiError(400, "No Package Found !"))
@@ -16,9 +16,9 @@ export const packageList = asyncHandler(async (req, res, next) => {
 
 export const userList = asyncHandler(async (req, res, next) => {
     const websiteLinkId = req?.user?.websiteLinked
-    let packagelist = await userDB.find({ websiteLinked: websiteLinkId, isStatus: true }, { _id: 1, fullName: 1 });
+    let packagelist = await userDB.find({ websiteLinked: websiteLinkId, isStatus: true, isRole: "Users" }, { _id: 1, fullName: 1 });
 
-    if (packagelist.length === 0) {
+    if (packagelist.length == 0) {
         return next(new ApiError(400, "No User Avabile !"))
     }
     res.status(200).json(new ApiResponse(200, packagelist))
