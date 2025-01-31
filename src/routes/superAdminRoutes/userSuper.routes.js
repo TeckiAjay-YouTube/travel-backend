@@ -55,18 +55,18 @@ router.delete("/deleteUser/:id", celebrate({
 router.post("/register", celebrate({
     body: Joi.object({
         isRole: Joi.string().valid("SuperAdmin").optional().default("SuperAdmin"),
-        websiteLinked: Joi.string().required().length(24),
+        websiteLinked: Joi.string().optional().length(24),
         fullName: Joi.string().required(),
         email: Joi.string().required(),
         password: Joi.string().required().min(5),
-        mobileNumber: Joi.string().required(),
+        mobileNumber: Joi.string().optional(),
         secureKey: Joi.string().required(),
         addresh: Joi.object({
-            country: Joi.string().required(),
-            state: Joi.string().required(),
-            city: Joi.string().required(),
-            addresh: Joi.string().required(),
-            pincode: Joi.number().required()
+            country: Joi.string().optional(),
+            state: Joi.string().optional(),
+            city: Joi.string().optional(),
+            addresh: Joi.string().optional(),
+            pincode: Joi.number().optional()
         }),
         isActive: Joi.boolean().optional().default(true),
     })

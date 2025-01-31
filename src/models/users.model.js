@@ -18,7 +18,6 @@ const userSchema = new Schema({
     websiteLinked: {
         type: Schema.Types.ObjectId,
         ref: "websites",
-        required: [true, "Please Select member Type !"]
     },
     fullName: {
         type: String,
@@ -34,7 +33,6 @@ const userSchema = new Schema({
     },
     mobileNumber: {
         type: String,
-        required: [true, "Please Enter your Mobile Number !"]
     },
     password: {
         type: String,
@@ -47,23 +45,18 @@ const userSchema = new Schema({
     addresh: {
         country: {
             type: String,
-            required: [true, "Please Enter Country"]
         },
         state: {
             type: String,
-            required: [true, "Please Enter State"]
         },
         city: {
             type: String,
-            required: [true, "Please Enter City !"]
         },
         addresh: {
             type: String,
-            required: [true, "Please Enter Addresh !"]
         },
         pincode: {
             type: Number,
-            required: [true, "Please Enter Pincode !"]
         },
     },
     isStatus: {
