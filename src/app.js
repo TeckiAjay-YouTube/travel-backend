@@ -3,6 +3,7 @@ import userSuper from "./routes/superAdminRoutes/userSuper.routes.js";
 import websiteSuper from "./routes/superAdminRoutes/websiteSuper.routes.js";
 import userAdmin from "./routes/adminPannelRoutes/users.routes.js";
 import packageAdmin from "./routes/adminPannelRoutes/package.routes.js";
+import blogAdmin from "./routes/adminPannelRoutes/blog.routes.js";
 import utilAdmin from "./routes/adminPannelRoutes/utils.routes.js";
 import frontendUser from "./routes/userPannelRoutes/frontend.routes.js";
 import cors from "cors";
@@ -33,7 +34,7 @@ app.use("/apiSuper/v1/website/", websiteSuper);
 // admin
 app.use("/apiAdmin/v1/user/", userAdmin);
 app.use("/apiAdmin/v1/package/", packageAdmin);
-app.use("/apiAdmin/v1/utils/", utilAdmin);
+app.use("/apiAdmin/v1/blog/", blogAdmin);
 app.use("/apiAdmin/v1/utils/", utilAdmin);
 // user frontend
 app.use("/apiUser/v1/frontend", frontendUser);
