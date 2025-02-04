@@ -46,6 +46,7 @@ export const addUser = asyncHandler(async (req, res) => {
     let storeData = req.body;
     let date = new Date().getTime()
     storeData.userName = `T${date}`
+    storeData.websiteLinked = req.websiteLinked;
 
     await userDB.create(storeData).then((data) => {
         res.status(201).json(new ApiResponse(201, "User Created Succesfully !"))

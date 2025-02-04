@@ -9,7 +9,6 @@ router.get("/getUsers", adminVerify, getUser);
 router.post("/addUser", celebrate({
     body: Joi.object({
         isRole: Joi.string().valid("Users").required(),
-        websiteLinked: Joi.string().required().length(24),
         fullName: Joi.string().required(),
         email: Joi.string().required(),
         password: Joi.string().required().min(5),
