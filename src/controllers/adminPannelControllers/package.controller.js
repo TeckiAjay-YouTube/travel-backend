@@ -2,6 +2,7 @@ import packageDB from "../../models/package.model.js"
 import { asyncHandler } from "../../utils/asyncHandler.js"
 import { ApiError } from "../../utils/ApiError.js"
 import { ApiResponse } from "../../utils/ApiResponse.js"
+import mongoose from "mongoose";
 
 export const getAllPackage = asyncHandler(async (req, res, next) => {
     const websiteLinkId = req.user.websiteLinked
@@ -21,6 +22,23 @@ export const addPackage = asyncHandler(async (req, res) => {
     if (!packagelist) {
         return next(new ApiError(400, "Package Not added !"))
     }
+    res.status(200).json(new ApiResponse(200, packagelist))
+});
+
+export const singlePackage = asyncHandler(async (req, res, next) => {
+    const id = req.params.id
+
+    let isValidId = mongoose.Types.ObjectId.isValid(id)
+        if (!isValidId) {
+            return next(new ApiError(400, "Not Valid Mongo Id"))
+        }
+
+    let packagelist = await packageDB.findById(id)
+
+    if (!packagelist) {
+        return next(new ApiError(400, "Package Not Found !"))
+    }
+
     res.status(200).json(new ApiResponse(200, packagelist))
 });
 

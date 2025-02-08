@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 import { celebrate, Joi } from "celebrate";
 import { adminVerify } from "../../middlewares/authVerifyMiddleware.js";
-import { addBlog, deleteBlog, getAllBlog, updateBlog } from "../../controllers/adminPannelControllers/blog.controller.js";
+import { addBlog, deleteBlog, getAllBlog, singleBlog, updateBlog } from "../../controllers/adminPannelControllers/blog.controller.js";
 
 router.get("/getAllBlog", adminVerify, getAllBlog);
 
@@ -18,6 +18,12 @@ router.post("/addBlog", celebrate({
         isStatus: Joi.boolean().optional(),
     })
 }), adminVerify, addBlog);
+
+router.get("/singleBlog/:id", celebrate({
+    params: Joi.object({
+        id: Joi.string().required().length(24),
+    })
+}), adminVerify, singleBlog);
 
 router.post("/updateBlog/:id", celebrate({
     body: Joi.object({

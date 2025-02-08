@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 import { celebrate, Joi } from "celebrate";
 import { adminVerify } from "../../middlewares/authVerifyMiddleware.js";
-import { addPackage, deletePackage, getAllPackage, updatePackage } from "../../controllers/adminPannelControllers/package.controller.js";
+import { addPackage, deletePackage, getAllPackage, singlePackage, updatePackage } from "../../controllers/adminPannelControllers/package.controller.js";
 
 router.get("/getAllPackage", adminVerify, getAllPackage);
 
@@ -22,6 +22,12 @@ router.post("/addPackage", celebrate({
         isStatus: Joi.boolean().optional(),
     })
 }), adminVerify, addPackage);
+
+router.get("/singlePackage/:id", celebrate({
+    params: Joi.object({
+        id: Joi.string().required().length(24),
+    })
+}), adminVerify, singlePackage);
 
 router.post("/updatePackage/:id", celebrate({
     body: Joi.object({

@@ -2,6 +2,7 @@ import blogDB from "../../models/blog.model.js"
 import { asyncHandler } from "../../utils/asyncHandler.js"
 import { ApiError } from "../../utils/ApiError.js"
 import { ApiResponse } from "../../utils/ApiResponse.js"
+import mongoose from "mongoose";
 
 export const getAllBlog = asyncHandler(async (req, res, next) => {
     const websiteLinkId = req.user.websiteLinked
@@ -22,6 +23,23 @@ export const addBlog = asyncHandler(async (req, res) => {
     if (!packagelist) {
         return next(new ApiError(400, "Blog Not added !"))
     }
+    res.status(200).json(new ApiResponse(200, packagelist))
+});
+
+export const singleBlog = asyncHandler(async (req, res, next) => {
+    const id = req.params.id
+    
+    let isValidId = mongoose.Types.ObjectId.isValid(id)
+    if (!isValidId) {
+        return next(new ApiError(400, "Not Valid Mongo Id"))
+    }
+
+    let packagelist = await blogDB.findById(id)
+
+    if (!packagelist) {
+        return next(new ApiError(400, "Blog Not Found !"))
+    }
+
     res.status(200).json(new ApiResponse(200, packagelist))
 });
 
