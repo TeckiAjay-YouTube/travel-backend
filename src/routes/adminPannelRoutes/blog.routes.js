@@ -41,7 +41,7 @@ router.post("/updateBlog/:id", celebrate({
     })
 }), adminVerify, updateBlog);
 
-router.post("/deleteBlog/:id", celebrate({
+router.get("/deleteBlog/:id", celebrate({
     params: Joi.object({
         id: Joi.string().required().length(24),
     })

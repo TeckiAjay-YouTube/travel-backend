@@ -49,7 +49,7 @@ router.post("/updatePackage/:id", celebrate({
     })
 }), adminVerify, updatePackage);
 
-router.post("/deletePackage/:id", celebrate({
+router.get("/deletePackage/:id", celebrate({
     params: Joi.object({
         id: Joi.string().required().length(24),
     })
