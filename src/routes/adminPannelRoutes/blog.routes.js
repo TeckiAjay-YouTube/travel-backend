@@ -2,11 +2,12 @@ import express from "express";
 const router = express.Router();
 import { celebrate, Joi } from "celebrate";
 import { adminVerify } from "../../middlewares/authVerifyMiddleware.js";
-import { addBlog, deleteBlog, getAllBlog, singleBlog, updateBlog } from "../../controllers/adminPannelControllers/blog.controller.js";
+import { addBlog, deleteBlog, getAllBlog, singleBlog, test, updateBlog } from "../../controllers/adminPannelControllers/blog.controller.js";
+import { uploadFile } from "../../middlewares/MulterMiddleware.js";
 
 router.get("/getAllBlog", adminVerify, getAllBlog);
 
-router.post("/addBlog", celebrate({
+router.post("/addBlog", uploadFile.single("image"), celebrate({
     body: Joi.object({
         title: Joi.string().required().min(3),
         description: Joi.string().required().min(20),
@@ -17,7 +18,13 @@ router.post("/addBlog", celebrate({
         extraField: Joi.string().optional(),
         isStatus: Joi.boolean().optional(),
     })
-}), adminVerify, addBlog);
+}), adminVerify, test);
+
+router.post("/uploadImage", uploadFile.single("image"), celebrate({
+    body: Joi.object({
+        image: Joi.string().optional(),
+    })
+}), test);
 
 router.get("/singleBlog/:id", celebrate({
     params: Joi.object({

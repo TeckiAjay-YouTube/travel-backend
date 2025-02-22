@@ -26,9 +26,14 @@ export const addBlog = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, packagelist))
 });
 
+export const test = asyncHandler(async (req, res) => {
+    console.log(req.body)
+    res.status(200).json(new ApiResponse(200, "done"))
+});
+
 export const singleBlog = asyncHandler(async (req, res, next) => {
     const id = req.params.id
-    
+
     let isValidId = mongoose.Types.ObjectId.isValid(id)
     if (!isValidId) {
         return next(new ApiError(400, "Not Valid Mongo Id"))
