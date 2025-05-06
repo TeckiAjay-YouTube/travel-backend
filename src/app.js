@@ -11,14 +11,15 @@ import { errors } from "celebrate";
 import cookieParser from "cookie-parser";
 import { ApiError } from "./utils/ApiError.js";
 import ErrorMiddleware from "./middlewares/ErrorMiddleware.js";
+import router from "./routes/homepageRoutes.js";
 
 const app = express();
 
 // Middleware for CORS
 const corsOptions = {
-    origin: "*",
-    credentials: true,
-    optionsSuccessStatus: 200,
+  origin: "*",
+  credentials: true,
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
@@ -36,12 +37,13 @@ app.use("/apiAdmin/v1/user/", userAdmin);
 app.use("/apiAdmin/v1/package/", packageAdmin);
 app.use("/apiAdmin/v1/blog/", blogAdmin);
 app.use("/apiAdmin/v1/utils/", utilAdmin);
+app.use("/apiAdmin/v1", router);
 // user frontend
 app.use("/apiUser/v1/frontend", frontendUser);
 
 // Catch-all for undefined routes
 app.all("*", (req, res, next) => {
-    next(new ApiError(404, `Not Available Path ${req.baseUrl} !`));
+  next(new ApiError(404, `Not Available Path ${req.baseUrl} !`));
 });
 
 // Error handling
