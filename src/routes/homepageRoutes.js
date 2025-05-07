@@ -4,6 +4,6 @@ import { editHomepage, getHomepage } from "../controllers/homepageController.js"
 import { adminVerify } from "../middlewares/authVerifyMiddleware.js";
 
 router.patch("/homepage", adminVerify, editHomepage);
-router.get("/homepage", adminVerify, getHomepage);
+router.get("/homepage", getHomepage);
 
 export default router;
