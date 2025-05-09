@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Homepage from "../models/homepage.js";
 import path from "path";
 
-// const createHomepage = async (req, res) => {
+
 //   try {
 //     const { bannerImg, headingText, logoUrl } = req.body;
 //     if (!bannerImg || !headingText || !logoUrl) {
@@ -36,22 +36,22 @@ export const getHomepage = async (req, res) => {
 
 export const editHomepage = async (req, res) => {
   try {
-    const { logoUrl, headingText } = req.body;
+    const { logoUrl, headingText, bannerImg } = req.body;
 
-    let bannerImg;
+    let image = "";
     if (req.file) {
-      bannerImg = `/uploads/${req.file.filename}`;
-    } else {
-      bannerImg = req.body.bannerImg;
+      image = `/uploads/${req.file.filename}`;
+    } else if (bannerImg) {
+      image = bannerImg;
     }
 
     const homepage = await Homepage.findOneAndUpdate(
       { _id: new mongoose.Types.ObjectId("6819f56fbc2bb942bcca2951") },
       {
-        bannerImg,
+        bannerImg: image,
         logoUrl,
         headingText,
-      }
+      },{new: true, runValidators: true}
     );
 
     res.status(200).json({

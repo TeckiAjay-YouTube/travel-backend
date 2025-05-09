@@ -15,6 +15,9 @@ import homepageRoute from "./routes/homepageRoutes.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import categoryRoutes from "./routes/userPannelRoutes/categoryRoutes.js"
+import router from "./routes/hikingStyleRoutes.js";
+
+
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +32,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.json({ limit: "16kb" }));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));
@@ -45,6 +48,8 @@ app.use("/apiAdmin/v1/blog/", blogAdmin);
 app.use("/apiAdmin/v1/utils/", utilAdmin);
 app.use("/apiAdmin/v1", homepageRoute);
 app.use("/apiAdmin/v1", categoryRoutes);
+app.use("/apiAdmin/v1", router);
+
 
 // user frontend
 app.use("/apiUser/v1/frontend", frontendUser);

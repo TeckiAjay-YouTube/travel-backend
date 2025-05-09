@@ -1,32 +1,52 @@
-import ExploreSection from "../../models/exploreSection.js";
+import Category from "../../models/category.js";
 
 export const createCategory = async (req, res) => {
   try {
-    const { icon, name, subcategories } = req.body;
+    const { categoryName, icon, subcategories } = req.body;
 
-    const category = await ExploreSection.findOne({ name: name.trim() });
-    if (category) {
-      return res.status(500).json({ message: "Category is already available" });
+    let imagePath = "";
+
+    if (req.file) {
+      imagePath = `/uploads/categories/${req.file.filename}`;
     }
 
-    const newCategory = new ExploreSection({ icon, name, subcategories });
+    const newSubcat = subcategories.map((sub) => ({
+      name: sub.name,
+      image: imagePath || sub.image,
+      description: sub.description,
+    }));
 
-    await newCategory.save();
-
-    res.status(200).json({
-      message: "Category created successfully",
-      category: newCategory,
+    const existingCategory = await Category.findOne({
+      categoryName: categoryName,
     });
+
+    if (existingCategory) {
+      return res
+        .status(500)
+        .json({ message: "Category with this name already exist" });
+    }
+
+    const category = new Category({
+      categoryName,
+      icon,
+      subcategories: newSubcat,
+    });
+
+    await category.save();
+
+    res
+      .status(200)
+      .json({ message: "category created successfully", category });
   } catch (err) {
     res
       .status(500)
-      .json({ message: "Error in creating category", error: err.message });
+      .json({ message: "Error in create category", error: err.message });
   }
 };
 
 export const getCategories = async (req, res) => {
   try {
-    const categories = await ExploreSection.find();
+    const categories = await Category.find();
     res.status(200).json(categories);
   } catch (err) {
     res.status(500).json(err.message);
@@ -37,7 +57,7 @@ export const getSingleCategory = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const category = await ExploreSection.findById(id);
+    const category = await Category.findById(id);
 
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
@@ -54,7 +74,7 @@ export const updateCategory = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const category = await ExploreSection.findById(id);
+    const category = await Category.findById(id);
     if (!category) {
       return res.status(404).json({ message: "Category not found" });
     }
@@ -77,7 +97,7 @@ export const updateCategory = async (req, res) => {
 
 export const deleteCategory = async (req, res) => {
   try {
-    const category = await ExploreSection.findByIdAndDelete(req.params.id);
+    const category = await Category.findByIdAndDelete(req.params.id);
     res.status(200).json({
       message: "Category deleted successfully",
       deletedCategory: category,

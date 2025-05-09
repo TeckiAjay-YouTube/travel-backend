@@ -13,12 +13,12 @@ const subcategorySchema = new mongoose.Schema({
   },
 });
 
-const exploreSectionSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
   icon: { type: String },
-  name: { type: String, required: true, unique: true },
+  categoryName: { type: String, required: true, unique: true },
   subcategories: [subcategorySchema],
 });
 
-const ExploreSection = mongoose.model("ExploreSection", exploreSectionSchema);
+const Category = mongoose.model("Category", categorySchema);
 
-export default ExploreSection;
+export default Category;
