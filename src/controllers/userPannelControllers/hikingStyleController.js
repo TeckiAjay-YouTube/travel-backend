@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import HikingStyle from "../../models/hikingStyle.js";
 
 export const getHikingStyle = async (req, res) => {
@@ -18,6 +17,13 @@ export const createHikingStyle = async (req, res) => {
       return res.status(500).json({ message: "Title is required." });
     }
 
+    let imagePath = "";
+    if (req.file) {
+      imagePath = `/uploads/hikingStyles/${req.file.filename}`;
+    } else {
+      imagePath = image;
+    }
+
     const existingDoc = await HikingStyle.findOne({ title: title.trim() });
 
     if (existingDoc) {
@@ -26,7 +32,11 @@ export const createHikingStyle = async (req, res) => {
         .json({ message: "Hiking Style with this title is already exist" });
     }
 
-    const hikingStyle = new HikingStyle({ title, description, image });
+    const hikingStyle = new HikingStyle({
+      title,
+      description,
+      image: imagePath,
+    });
 
     await hikingStyle.save();
 
@@ -55,15 +65,20 @@ export const editHikingStyle = async (req, res) => {
       imagePath = image;
     }
 
+    const existingDoc = await HikingStyle.findById(id)
+
+    if(!existingDoc){
+      return res.status(404).json({message: "Hiking style not found."})
+    }
+
+
     const updatedDoc = await HikingStyle.findOneAndUpdate(
       { _id: id },
       { title, description, image: imagePath },
       { new: true, runValidators: true }
     );
 
-    if (!updatedDoc) {
-      return res.status(404).json({ message: "Hiking style not found" });
-    }
+   
 
     res.status(200).json({
       message: "Hiking style updated successfully",
