@@ -19,7 +19,7 @@ export const createHikingStyle = async (req, res) => {
 
     let imagePath = "";
     if (req.file) {
-      imagePath = `/uploads/hikingStyles/${req.file.filename}`;
+      imagePath = `/uploads/${req.file.filename}`;
     } else {
       imagePath = image;
     }
@@ -60,7 +60,7 @@ export const editHikingStyle = async (req, res) => {
     let imagePath = "";
 
     if (req.file) {
-      imagePath = `/uploads/hikingStyles/${req.file.filename}`;
+      imagePath = `/uploads/${req.file.filename}`;
     } else if (image) {
       imagePath = image;
     }
@@ -107,3 +107,5 @@ export const deleteHikingStyle = async (req, res) => {
       .json({ message: "Error in deleting hiking style", error: err.message });
   }
 };
+
+

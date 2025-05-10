@@ -2,37 +2,45 @@ import Category from "../../models/category.js";
 
 export const createCategory = async (req, res) => {
   try {
-    const { categoryName, icon, subcategories } = req.body;
+    const { categoryName, icon } = req.body;
 
-    let imagePath = "";
+    let subcategories = [];
 
-    if (req.file) {
-      imagePath = `/uploads/categories/${req.file.filename}`;
+    if (req.body.name && req.body.description) {
+      const imagePath = req.file
+        ? `/uploads/${req.file.filename}`
+        : req.body.image;
+      subcategories.push({
+        name: req.body.name,
+        description: req.body.description,
+        image: imagePath,
+      });
     }
 
-    const newSubcat = subcategories.map((sub) => ({
-      name: sub.name,
-      image: imagePath || sub.image,
-      description: sub.description,
-    }));
+    if (req.body.subcategories) {
+      let parsed =
+        typeof req.body.subcategories === "string"
+          ? JSON.parse(req.body.subcategories)
+          : req.body.subcategories;
 
-    const existingCategory = await Category.findOne({
-      categoryName: categoryName,
-    });
+      subcategories = parsed;
+    }
 
+    const existingCategory = await Category.findOne({ categoryName });
     if (existingCategory) {
       return res
-        .status(500)
-        .json({ message: "Category with this name already exist" });
+        .status(400)
+        .json({ message: "Category with this name already exists" });
     }
 
     const category = new Category({
       categoryName,
       icon,
-      subcategories: newSubcat,
+      subcategories,
     });
 
     await category.save();
+    console.log("success");
 
     res
       .status(200)

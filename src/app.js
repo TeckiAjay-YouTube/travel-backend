@@ -14,10 +14,10 @@ import ErrorMiddleware from "./middlewares/ErrorMiddleware.js";
 import homepageRoute from "./routes/homepageRoutes.js";
 import { fileURLToPath } from "url";
 import path from "path";
-import categoryRoutes from "./routes/userPannelRoutes/categoryRoutes.js"
+import categoryRoutes from "./routes/userPannelRoutes/categoryRoutes.js";
 import router from "./routes/hikingStyleRoutes.js";
-
-
+import tripPictureRoutes from "./routes/tripPictureRoutes.js";
+import testimonialRoutes from "./routes/testimonialRoutes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -35,7 +35,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
-app.use('/uploads', express.static(path.join(__dirname, './uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
 app.use(express.static("public"));
 
 // superadmin pannel routes
@@ -49,7 +49,8 @@ app.use("/apiAdmin/v1/utils/", utilAdmin);
 app.use("/apiAdmin/v1", homepageRoute);
 app.use("/apiAdmin/v1", categoryRoutes);
 app.use("/apiAdmin/v1", router);
-
+app.use("/apiAdmin/v1", tripPictureRoutes);
+app.use("/apiAdmin/v1", testimonialRoutes);
 
 // user frontend
 app.use("/apiUser/v1/frontend", frontendUser);
