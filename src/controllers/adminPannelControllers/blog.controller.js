@@ -27,7 +27,6 @@ export const addBlog = asyncHandler(async (req, res) => {
 });
 
 export const test = asyncHandler(async (req, res) => {
-    console.log(req.body)
     res.status(200).json(new ApiResponse(200, "done"))
 });
 
