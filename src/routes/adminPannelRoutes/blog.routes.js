@@ -7,7 +7,6 @@ import {
   deleteBlog,
   getAllBlog,
   singleBlog,
-  test,
   updateBlog,
 } from "../../controllers/adminPannelControllers/blog.controller.js";
 import uploadFile from "../../middlewares/MulterMiddleware.js";
@@ -30,19 +29,19 @@ router.post(
     }),
   }),
   adminVerify,
-  test
+  addBlog
 );
 
-router.post(
-  "/uploadImage",
-  uploadFile.single("image"),
-  celebrate({
-    body: Joi.object({
-      image: Joi.string().optional(),
-    }),
-  }),
-  test
-);
+// router.post(
+//   "/uploadImage",
+//   uploadFile.single("image"),
+//   celebrate({
+//     body: Joi.object({
+//       image: Joi.string().optional(),
+//     }),
+//   }),
+//   addBlog
+// );
 
 router.get(
   "/singleBlog/:id",
