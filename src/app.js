@@ -15,7 +15,7 @@ import homepageRoute from "./routes/homepageRoutes.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import categoryRoutes from "./routes/userPannelRoutes/categoryRoutes.js";
-import router from "./routes/hikingStyleRoutes.js";
+import hikingStylerouter from "./routes/hikingStyleRoutes.js";
 import tripPictureRoutes from "./routes/tripPictureRoutes.js";
 import testimonialRoutes from "./routes/testimonialRoutes.js";
 
@@ -46,11 +46,11 @@ app.use("/apiAdmin/v1/user/", userAdmin);
 app.use("/apiAdmin/v1/package/", packageAdmin);
 app.use("/apiAdmin/v1/blog/", blogAdmin);
 app.use("/apiAdmin/v1/utils/", utilAdmin);
-app.use("/apiAdmin/v1", homepageRoute);
-app.use("/apiAdmin/v1", categoryRoutes);
-app.use("/apiAdmin/v1", router);
-app.use("/apiAdmin/v1", tripPictureRoutes);
-app.use("/apiAdmin/v1", testimonialRoutes);
+app.use("/apiAdmin/v1/home/", homepageRoute);
+app.use("/apiAdmin/v1/category/", categoryRoutes);
+app.use("/apiAdmin/v1/hikingStyle/", hikingStylerouter);
+app.use("/apiAdmin/v1/tripPicture/", tripPictureRoutes);
+app.use("/apiAdmin/v1/testimonail/", testimonialRoutes);
 
 // user frontend
 app.use("/apiUser/v1/frontend", frontendUser);
