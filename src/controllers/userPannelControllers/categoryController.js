@@ -1,63 +1,13 @@
 import Category from "../../models/category.js";
-
-export const createCategory = async (req, res) => {
-  try {
-    const { categoryName, icon } = req.body;
-
-    let subcategories = [];
-
-    if (req.body.name && req.body.description) {
-      const imagePath = req.file
-        ? `/uploads/${req.file.filename}`
-        : req.body.image;
-      subcategories.push({
-        name: req.body.name,
-        description: req.body.description,
-        image: imagePath,
-      });
-    }
-
-    if (req.body.subcategories) {
-      let parsed =
-        typeof req.body.subcategories === "string"
-          ? JSON.parse(req.body.subcategories)
-          : req.body.subcategories;
-
-      subcategories = parsed;
-    }
-
-    const existingCategory = await Category.findOne({ categoryName });
-    if (existingCategory) {
-      return res
-        .status(400)
-        .json({ message: "Category with this name already exists" });
-    }
-
-    const category = new Category({
-      categoryName,
-      icon,
-      subcategories,
-    });
-
-    await category.save();
-    console.log("success");
-
-    res
-      .status(200)
-      .json({ message: "category created successfully", category });
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error in create category", error: err.message });
-  }
-};
+import { ApiError } from "../../utils/ApiError.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
 
 export const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
-    res.status(200).json(categories);
+    const categories = await Category.find({ isStatus: "true" });
+    res.status(200).json(new ApiResponse(200, categories, categories?.length));
   } catch (err) {
-    res.status(500).json(err.message);
+    res.status(500).json(new ApiError(500, "Internel server error !"));
   }
 };
 
@@ -68,49 +18,11 @@ export const getSingleCategory = async (req, res) => {
     const category = await Category.findById(id);
 
     if (!category) {
-      return res.status(404).json({ message: "Category not found" });
+      return res.status(404).json(new ApiError(404, "Category not found !"));
     }
 
-    res.status(200).json(category);
+    res.status(200).json(new ApiResponse(200, category, category?.length));
   } catch (error) {
-    res.status(500).json({ message: "Error in getting single category" });
-  }
-};
-
-export const updateCategory = async (req, res) => {
-  const { icon, name, subcategories } = req.body;
-  const { id } = req.params;
-
-  try {
-    const category = await Category.findById(id);
-    if (!category) {
-      return res.status(404).json({ message: "Category not found" });
-    }
-
-    category.name = name;
-    category.icon = icon;
-    category.subcategories = subcategories;
-
-    await category.save();
-
-    res
-      .status(200)
-      .json({ message: "Category updated successfully", category });
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error in update category", error: err.message });
-  }
-};
-
-export const deleteCategory = async (req, res) => {
-  try {
-    const category = await Category.findByIdAndDelete(req.params.id);
-    res.status(200).json({
-      message: "Category deleted successfully",
-      deletedCategory: category,
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Error in deleting category" });
+    res.status(500).json(new ApiError(500, "Internel server Error !"));
   }
 };

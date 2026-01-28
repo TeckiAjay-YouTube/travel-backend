@@ -14,7 +14,8 @@ import ErrorMiddleware from "./middlewares/ErrorMiddleware.js";
 import homepageRoute from "./routes/homepageRoutes.js";
 import { fileURLToPath } from "url";
 import path from "path";
-import categoryRoutes from "./routes/userPannelRoutes/categoryRoutes.js";
+import categoryRoutes from "./routes/adminPannelRoutes/category.routes.js";
+import frontendCategory from "./routes/userPannelRoutes/category.routes.js";
 import hikingStylerouter from "./routes/hikingStyleRoutes.js";
 import tripPictureRoutes from "./routes/tripPictureRoutes.js";
 import testimonialRoutes from "./routes/testimonialRoutes.js";
@@ -54,6 +55,7 @@ app.use("/apiAdmin/v1/testimonail/", testimonialRoutes);
 
 // user frontend
 app.use("/apiUser/v1/frontend", frontendUser);
+app.use("/apiUser/v1/category", frontendCategory);
 
 // Catch-all for undefined routes
 app.all("*", (req, res, next) => {

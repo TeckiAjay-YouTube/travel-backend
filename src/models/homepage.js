@@ -10,7 +10,7 @@ const homepageSchema = new mongoose.Schema({
   headingText: {
     type: String,
   },
-});
+},{ timestamps: true });
 
 const Homepage = mongoose.model("Homepage", homepageSchema, "homepage");
 
