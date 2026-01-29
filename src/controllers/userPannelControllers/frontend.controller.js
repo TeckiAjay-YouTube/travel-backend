@@ -13,7 +13,7 @@ export const getPackageInfo = asyncHandler(async (req, res, next) => {
     if (!isValidId) {
         return next(new ApiError(400, "Not Valid Website Id"))
     }
-    let packagelist = await packageDB.find({ websiteLinked: websiteLinkId, slug: slug });
+    let packagelist = await packageDB.find({ websiteLinked: websiteLinkId, isStatus: true, slug: slug });
     if (packagelist.length === 0) {
         return next(new ApiError(400, "No Package Found !"))
     }
@@ -27,7 +27,7 @@ export const getAllPackageUser = asyncHandler(async (req, res, next) => {
     if (!isValidId) {
         return next(new ApiError(400, "Not Valid Website Id"))
     }
-    let packagelist = await packageDB.find({ websiteLinked: websiteLinkId }, { "_id": 1, "title": 1, "description": 1, "image": 1, "price": 1, "duration": 1, "pickUpPoint": 1, "dropPoint": 1, "pdf": 1, "slug": 1, });
+    let packagelist = await packageDB.find({ websiteLinked: websiteLinkId, isStatus: true }, { "_id": 1, "title": 1, "description": 1, "image": 1, "price": 1, "duration": 1, "pickUpPoint": 1, "dropPoint": 1, "pdf": 1, "slug": 1, "isStatus": 1, "createdAt": 1, "updatedAt": 1 });
     if (packagelist.length === 0) {
         return next(new ApiError(400, "No Package Found !"))
     }
@@ -42,7 +42,7 @@ export const getBlogInfo = asyncHandler(async (req, res, next) => {
     if (!isValidId) {
         return next(new ApiError(400, "Not Valid Website Id"))
     }
-    let packagelist = await blogDB.find({ websiteLinked: websiteLinkId, slug: slug });
+    let packagelist = await blogDB.find({ websiteLinked: websiteLinkId, isStatus: true, slug: slug });
     if (packagelist.length === 0) {
         return next(new ApiError(400, "No Blog Found !"))
     }
@@ -56,7 +56,7 @@ export const getAllBlogUser = asyncHandler(async (req, res, next) => {
     if (!isValidId) {
         return next(new ApiError(400, "Not Valid Website Id"))
     }
-    let packagelist = await blogDB.find({ websiteLinked: websiteLinkId }, { "_id": 1, "title": 1, "description": 1, "image": 1, "slug": 1, "category": 1 });
+    let packagelist = await blogDB.find({ websiteLinked: websiteLinkId, isStatus: true }, { "_id": 1, "title": 1, "description": 1, "image": 1, "slug": 1, "category": 1, "isStatus": 1, "createdAt": 1, "updatedAt": 1 });
     if (packagelist.length === 0) {
         return next(new ApiError(400, "No Blog Found !"))
     }
