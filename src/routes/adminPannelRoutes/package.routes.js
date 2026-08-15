@@ -1,27 +1,34 @@
 import express from "express";
 const router = express.Router();
 import { celebrate, Joi } from "celebrate";
+import upload from "../../middlewares/MulterMiddleware.js";
 import { adminVerify } from "../../middlewares/authVerifyMiddleware.js";
 import { addPackage, deletePackage, getAllPackage, singlePackage, updatePackage } from "../../controllers/adminPannelControllers/package.controller.js";
 
 router.get("/getAllPackage", adminVerify, getAllPackage);
 
-router.post("/addPackage", celebrate({
-    body: Joi.object({
-        title: Joi.string().required().min(3),
-        description: Joi.string().required().min(20),
-        image: Joi.string().required(),
-        price: Joi.string().required(),
-        duration: Joi.string().required(),
-        pickUpPoint: Joi.string().required(),
-        dropPoint: Joi.string().required(),
-        pdf: Joi.string().optional(),
-        slug: Joi.string().required(),
-        slugContent: Joi.string().required(),
-        extraField: Joi.string().optional(),
-        isStatus: Joi.boolean().optional(),
-    })
-}), adminVerify, addPackage);
+router.post("/addPackage", upload.fields([
+    {
+        name: "image",
+        maxCount: 1
+    }
+])
+    , celebrate({
+        body: Joi.object({
+            title: Joi.string().required().min(3),
+            description: Joi.string().required().min(20),
+            // image: Joi.string().required(),
+            price: Joi.string().required(),
+            duration: Joi.string().required(),
+            pickUpPoint: Joi.string().required(),
+            dropPoint: Joi.string().required(),
+            pdf: Joi.string().optional(),
+            slug: Joi.string().required(),
+            slugContent: Joi.string().required(),
+            extraField: Joi.string().optional(),
+            isStatus: Joi.boolean().optional(),
+        })
+    }), adminVerify, addPackage);
 
 router.get("/singlePackage/:id", celebrate({
     params: Joi.object({
