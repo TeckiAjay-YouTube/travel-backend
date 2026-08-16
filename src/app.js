@@ -19,6 +19,7 @@ import frontendCategory from "./routes/userPannelRoutes/category.routes.js";
 import hikingStylerouter from "./routes/hikingStyleRoutes.js";
 import tripPictureRoutes from "./routes/tripPictureRoutes.js";
 import testimonialRoutes from "./routes/testimonialRoutes.js";
+import mediaRoutes from "./routes/adminPannelRoutes/media.routes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -52,6 +53,7 @@ app.use("/apiAdmin/v1/category/", categoryRoutes);
 app.use("/apiAdmin/v1/hikingStyle/", hikingStylerouter);
 app.use("/apiAdmin/v1/tripPicture/", tripPictureRoutes);
 app.use("/apiAdmin/v1/testimonail/", testimonialRoutes);
+app.use("/apiAdmin/v1/media/", mediaRoutes);
 
 // user frontend
 app.use("/apiUser/v1/frontend", frontendUser);

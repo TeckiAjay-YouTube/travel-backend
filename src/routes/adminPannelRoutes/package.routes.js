@@ -7,17 +7,11 @@ import { addPackage, deletePackage, getAllPackage, singlePackage, updatePackage 
 
 router.get("/getAllPackage", adminVerify, getAllPackage);
 
-router.post("/addPackage", upload.fields([
-    {
-        name: "image",
-        maxCount: 1
-    }
-])
-    , celebrate({
+router.post("/addPackage", celebrate({
         body: Joi.object({
             title: Joi.string().required().min(3),
             description: Joi.string().required().min(20),
-            // image: Joi.string().required(),
+            image: Joi.string().required(),
             price: Joi.string().required(),
             duration: Joi.string().required(),
             pickUpPoint: Joi.string().required(),

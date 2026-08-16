@@ -15,11 +15,6 @@ export const getAllPackage = asyncHandler(async (req, res, next) => {
 
 export const addPackage = asyncHandler(async (req, res) => {
     const websiteLinkId = req.user.websiteLinked
-
-    if (true) {
-        console.log(req?.files?.image)
-        return res.status(200).json({ pass: "pass" })
-    }
     let packageCreate = req.body;
     packageCreate.websiteLinked = websiteLinkId
     let packagelist = await packageDB.create(packageCreate);
