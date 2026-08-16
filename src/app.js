@@ -25,20 +25,32 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware for CORS
 const corsOptions = {
-  origin: "*",
-  credentials: true,
-  optionsSuccessStatus: 200,
+    origin: true,
+    credentials: true,
+    methods: [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "OPTIONS"
+    ],
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "X-Requested-With"
+    ]
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
-app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
-app.use(express.static("public"));
+// Public files
+app.use("/public",express.static(path.join(__dirname, "../public")));
 
 // superadmin pannel routes
 app.use("/apiSuper/v1/user/", userSuper);
@@ -61,7 +73,7 @@ app.use("/apiUser/v1/category", frontendCategory);
 
 // Catch-all for undefined routes
 app.all("*", (req, res, next) => {
-  next(new ApiError(404, `Not Available Path ${req.baseUrl} !`));
+    next(new ApiError(404, `Not Available Path ${req.baseUrl} !`));
 });
 
 // Error handling
